@@ -2,47 +2,100 @@ using System;
 namespace Talal{
     ////////////task (1)
     public class Person{
-    public  String Name ;
-    public  int Age;
-        public Person(String name ,int age){
-            Name=name;
-            Age=age;
-        }
     
+    private String Name ;
+    public String _Name{
+        set{Name=value;
+        if(value == null || value == "" || value.Length >=32)
+                {
+                    throw new Exception("Invalid Name");
+                }
+        }
+        get{ return Name;}
+    }
+    private int Age;
+    public int _Age{
+        set{Age =value;
+        if(value <= 0 || value > 128)
+                {
+                    throw new Exception("Invalid Age");
+                }
+        }
+        get{return Age;}
+    }
+        public Person(String name ,int age){
+            _Name=name;
+            _Age=age;
+        }
         public virtual void print(){
             
-            Console.WriteLine("My name is "+ Name+ ",My age is "+Age);
+            Console.WriteLine("My name is "+ _Name+ ",My age is "+_Age);
 
         }
-
-
     }
     public class Student : Person{
-        int Year;
-        float Gpa;
+        private int Year;
+        public int _Year{
+            set{Year=value;
+            if(value < 1 || value > 5)
+                {
+                throw new Exception("Invalid Year");
+                }
+            }
+            get{return Year;}
+        }
+        private float Gpa;
+        public float _Gpa{
+            set{Gpa=value;
+            if(value < 0 || value > 4)
+                {
+                throw new Exception("Invalid Gpa");
+                }
+            }
+            get{return Gpa;}
+        }
         public Student(String name,int age , int year, float gpa) : base(name,age){
-            Year= year;
-            Gpa=gpa;
-
+            _Year= year;
+            _Gpa=gpa;
         }
 
         public override void print()
         {
-            Console.WriteLine("My name is "+ Name+ ",My age is "+Age+",My gpa is "+Gpa);
+            Console.WriteLine("My name is "+ _Name  + ",My age is "+_Age+",My gpa is "+_Gpa);
         }
     }
     ////////////////////// task (2)
     public class Staff : Person{
-        double Salary ;
-        int JoinYear;
+        private double Salary ;
+        public double _Salary{
+            set{Salary=value;
+            if(value < 0 || value > 120000)
+                {
+                    throw new Exception("Invalid Salary");
+                }
+            }
+            get{return Salary;}
+        }
+        private int JoinYear;
+        public int _JoinYear{
+            set{value = (2022-(2022-_Age));
+            JoinYear=value;
+            if(value<21)
+                {
+                    throw new Exception("Invalid JoinYear ");
+                }
+            }
+            get{return JoinYear;}
+
+        }
         public Staff(String name , int age ,double salary,int joinyear): base (name , age){
-            Salary=salary;
-            JoinYear=joinyear;
+            _Salary=salary;
+            _JoinYear=joinyear;
 
         }
         public override void print()
         {
-        Console.WriteLine("My name is "+ Name+ ",My age is "+Age+", and my salary is "+Salary );
+        Console.WriteLine("My name is "+ _Name + ",My age is "+_Age+", and my salary is "+_Salary );
         }
     }
         public class Database {
@@ -96,8 +149,15 @@ namespace Talal{
                 int Y1 = int.Parse(Console.ReadLine());
                 Console.WriteLine("Enter the Gpa :  ");
                 float G1 = float.Parse(Console.ReadLine());
-                var student = new Student(N1,A1,Y1,G1);
+                try{
+                    var student = new Student(N1,A1,Y1,G1);
                 data_b.AddStudent(student);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                
                 //student.print();
                 break;
                 case 2: 
@@ -109,8 +169,15 @@ namespace Talal{
                 double S2 = double.Parse(Console.ReadLine());
                 Console.WriteLine("Enter the JoinYear :  ");
                 int J2 = int.Parse(Console.ReadLine());
-                var staff = new Staff(N2,A2,S2,J2);
+                try{
+                    var staff = new Staff(N2,A2,S2,J2);
                 data_b.AddStaff(staff);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                
                 //staff.print();
                 break;
                 case 3:
@@ -118,9 +185,14 @@ namespace Talal{
                 String N3 = Console.ReadLine();
                 Console.WriteLine("Enter the Age :  ");
                 int A3 = int.Parse( Console.ReadLine());
+                try{
                 var person =new Person(N3,A3);
                 data_b.AddPerson(person);
-
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
                 break;
                 case 4:
                 data_b.print_everthing();
